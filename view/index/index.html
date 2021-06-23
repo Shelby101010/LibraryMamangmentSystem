@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入axios -->
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <style>
+        #app {
+            height: 95vh;
+        }
+
+        .index-container {
+            height: 100%;
+        }
+
+        .header {
+            background: #409EFF;
+            border: 1px solid #DCDFE6;
+            border-radius: 4px;
+            margin: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .aside {
+            background: #A7CFF9;
+            border: 1px solid #DCDFE6;
+            border-radius: 4px;
+            margin: 3px;
+            padding: 5px;
+        }
+
+        .aside > .el-menu {
+            border-radius: 4px;
+            border: 1px solid #DCDFE6;
+        }
+
+        .main {
+            background: #DEE9F4;
+            border: 1px solid #DCDFE6;
+            border-radius: 4px;
+            margin: 3px;
+        }
+
+        .header-title {
+            font-family: PingFang SC;
+            font-size: 24px;
+            color: #FFFFFF;
+        }
+
+        .main-table {
+            border: 1px solid #DCDFE6;
+            border-radius: 4px;
+        }
+
+        .margin-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-container class="index-container">
+        <!-- 顶栏 -->
+        <el-header class="header">
+            <div>
+                <span class="header-title el-icon-reading">  图书管理系统</span>
+            </div>
+            <div>
+                <el-button type="primary" icon="el-icon-user">登录 / 注册</el-button>
+            </div>
+        </el-header>
+        <el-container>
+            <!-- 侧边栏 -->
+            <el-aside class="aside">
+                <el-menu
+                        default-active='1'
+                        class="el-menu-vertical-demo"
+                        @open="handleOpen"
+                        @close="handleClose">
+                    <el-menu-item index="1" @click="chooseActive(1)">
+                        <template slot="title">
+                            <i class="el-icon-s-management"></i>
+                            <span>图书库存管理</span>
+                        </template>
+                    </el-menu-item>
+                    <el-submenu index="2">
+                        <template slot="title">
+                            <i class="el-icon-s-custom"></i>
+                            <span>账号管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item @click="chooseActive(2)">管理员账号管理</el-menu-item>
+                            <el-menu-item @click="chooseActive(3)">用户账号管理</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+            <!-- 主要区域 -->
+            <el-main class="main">
+                <el-container v-if="active == 1">
+                    <el-header class="margin-title">
+                        <p>图书库存管理</p>
+                        <el-button type="primary" round>添加</el-button>
+                    </el-header>
+                    <template>
+                        <el-table :data="tableData" style="width: 100%" class="main-table">
+                            <el-table-column
+                                    prop="book_id"
+                                    label="图书号"
+                                    width="180"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="book_name"
+                                    label="图书名称"
+                                    width="380"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="book_category"
+                                    label="图书类别"
+                                    width="280"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="book_number"
+                                    label="库存数量"
+                                    width="80"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    label="操作"
+                                    align="center">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            size="mini"
+                                            @click="handleEdit(scope.$index, scope.row)">Edit
+                                    </el-button>
+                                    <el-button
+                                            size="mini"
+                                            type="danger"
+                                            @click="handleDelete(scope.$index, scope.row)">Delete
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-container>
+                <el-container v-if="active == 2">
+                    <el-header class="margin-title">
+                        <p>用户账号管理</p>
+                        <el-button type="primary" round>添加</el-button>
+                    </el-header>
+                    <template>
+                        <el-table :data="tableData" style="width: 100%" class="main-table">
+                            <el-table-column
+                                    prop="user_id"
+                                    label="id"
+                                    width="180"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="user_name"
+                                    label="用户名"
+                                    width="380"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="user_password"
+                                    label="密码"
+                                    width="380"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    label="操作"
+                                    align="center">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            size="mini"
+                                            @click="handleEdit(scope.$index, scope.row)">Edit
+                                    </el-button>
+                                    <el-button
+                                            size="mini"
+                                            type="danger"
+                                            @click="handleDelete(scope.$index, scope.row)">Delete
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-container>
+                <el-container v-if="active == 3">
+                    <el-header class="margin-title">
+                        <p>管理员账号管理</p>
+                        <el-button type="primary" round>添加</el-button>
+                    </el-header>
+                    <template>
+                        <el-table :data="tableData" style="width: 100%" class="main-table">
+                            <el-table-column
+                                    prop="user_id"
+                                    label="id"
+                                    width="180"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="user_name"
+                                    label="用户名"
+                                    width="380"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="user_password"
+                                    label="密码"
+                                    width="380"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    label="操作"
+                                    align="center">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            size="mini"
+                                            @click="handleEdit(scope.$index, scope.row)">Edit
+                                    </el-button>
+                                    <el-button
+                                            size="mini"
+                                            type="danger"
+                                            @click="handleDelete(scope.$index, scope.row)">Delete
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-container>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            active: '1',
+            tableData: [{
+                book_id: '2016-05-02',
+                book_name: '王小虎',
+                book_category: '上海市普陀区金沙江路 1518 弄',
+                book_number: '123'
+            }, {
+                book_id: '2016-05-02',
+                book_name: '王小虎',
+                book_category: '上海市普陀区金沙江路 1518 弄',
+                book_number: '123'
+            }, {
+                book_id: '2016-05-02',
+                book_name: '王小虎',
+                book_category: '上海市普陀区金沙江路 1518 弄',
+                book_number: '123'
+            }, {
+                book_id: '2016-05-02',
+                book_name: '王小虎',
+                book_category: '上海市普陀区金沙江路 1518 弄',
+                book_number: '123'
+            }]
+        },
+        methods: {
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            },
+
+            chooseActive(id) {
+                this.active = id
+            }
+        },
+        created() {
+
+        },
+    })
+</script>
+</html>
