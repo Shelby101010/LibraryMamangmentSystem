@@ -10,4 +10,8 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
+
 Route::resource('index', 'Index');
+
+Route::rule('remove','Index/remove','POST');
+Route::rule('modify','Index/modify','POST');

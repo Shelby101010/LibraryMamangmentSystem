@@ -1,10 +1,9 @@
 <?php
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace app\controller;
 
 use app\model\Books;
-use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 
@@ -29,67 +28,133 @@ class index
      */
     public function create()
     {
-        //
+        return 'create';
     }
 
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
     {
-        //
+        $res = 0;
+        $active = Request::param('active');
+        $formData = Request::param('data');
+
+        switch ($active) {
+            case '1':
+                $books = new Books();
+                $res = $books->save($formData);
+                break;
+            case '2':
+                $res = '用户表数据';
+                break;
+            case '3':
+                $res = '管理员表数据';
+                break;
+        }
+        return $res;
+
     }
 
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
     public function read($id)
     {
-        $res = Db::table('table_books')->where('id', 1)->find();
-        dump($res);
-        $idx = Request::param('id');
-        $res = Books::find($idx);
-        echo($res);
+        $res = '';
+        switch ($id) {
+            case '1':
+                $res = Books::select();
+                break;
+            case '2':
+                $res = '用户表数据';
+                break;
+            case '3':
+                $res = '管理员表数据';
+                break;
+        }
         return $res;
     }
 
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
     public function edit($id)
     {
-        //
+        return 'edit';
     }
 
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param \think\Request $request
+     * @param int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        return 'update';
     }
 
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function delete(Request $request)
     {
-        //
+        return 'delete';
+    }
+
+    public  function remove(Request $request) {
+        $active = Request::param('active');
+        $id = Request::param('id');
+        $res = '';
+        switch ($active) {
+            case '1':
+                $book = Books::find($id);
+                $res = $book->delete();
+                break;
+            case '2':
+                $res = '用户表数据';
+                break;
+            case '3':
+                $res = '管理员表数据';
+                break;
+        }
+        return $res;
+    }
+
+    public function modify(Request $request) {
+        $active = Request::param('active');
+        $id = Request::param('id');
+        $data = Request::param('data');
+        $res='';
+        switch ($active) {
+            case '1':
+                $book = Books::find($id);
+                $book->name     = $data['name'];
+                $book->number    = $data['number'];
+                $book->category    = $data['category'];
+                $res = $book->save();
+                break;
+            case '2':
+                $res = '用户表数据';
+                break;
+            case '3':
+                $res = '管理员表数据';
+                break;
+        }
+        return $res;
     }
 }
