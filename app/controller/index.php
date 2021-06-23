@@ -3,9 +3,12 @@ declare (strict_types=1);
 
 namespace app\controller;
 
+use app\model\Admin;
 use app\model\Books;
+use app\model\User;
 use think\facade\Request;
 use think\facade\View;
+use think\Model;
 
 
 class index
@@ -49,10 +52,12 @@ class index
                 $res = $books->save($formData);
                 break;
             case '2':
-                $res = '用户表数据';
+                $user = new User();
+                $res = $user->save($formData);
                 break;
             case '3':
-                $res = '管理员表数据';
+                $admin = new Admin();
+                $res = $admin->save($formData);
                 break;
         }
         return $res;
@@ -73,10 +78,10 @@ class index
                 $res = Books::select();
                 break;
             case '2':
-                $res = '用户表数据';
+                $res = User::select();
                 break;
             case '3':
-                $res = '管理员表数据';
+            $res = Admin::select();
                 break;
         }
         return $res;
@@ -126,10 +131,12 @@ class index
                 $res = $book->delete();
                 break;
             case '2':
-                $res = '用户表数据';
+                $user = User::find($id);
+                $res = $user->delete();
                 break;
             case '3':
-                $res = '管理员表数据';
+                $admin= Admin::find($id);
+                $res = $admin->delete();
                 break;
         }
         return $res;
@@ -149,10 +156,16 @@ class index
                 $res = $book->save();
                 break;
             case '2':
-                $res = '用户表数据';
+                $user = User::find($id);
+                $user->username     = $data['username'];
+                $user->password    = $data['password'];
+                $res = $user->save();
                 break;
             case '3':
-                $res = '管理员表数据';
+                $admin = Admin::find($id);
+                $admin->username     = $data['username'];
+                $admin->password    = $data['password'];
+                $res = $admin->save();
                 break;
         }
         return $res;

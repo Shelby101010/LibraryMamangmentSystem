@@ -83,7 +83,7 @@
             <!-- 侧边栏 -->
             <el-aside class="aside">
                 <el-menu
-                        default-active='1'
+                        :default-active=active
                         class="el-menu-vertical-demo"
                         @open="handleOpen"
                         @close="handleClose">
@@ -99,8 +99,8 @@
                             <span>账号管理</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item @click="chooseActive(2)">管理员账号管理</el-menu-item>
-                            <el-menu-item @click="chooseActive(3)">用户账号管理</el-menu-item>
+                            <el-menu-item index="2-1"><div @click="chooseActive(2)">管理员账号管理</div></el-menu-item>
+                            <el-menu-item index="2-2"><div @click="chooseActive(3)">用户账号管理</div></el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
@@ -161,27 +161,27 @@
                 </el-container>
                 <el-container v-if="active == 2">
                     <el-header class="margin-title">
-                        <p>用户账号管理</p>
-                        <el-button type="primary" round>添加</el-button>
+                        <p>用户管理</p>
+                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true">添加</el-button>
                     </el-header>
                     <template>
-                        <el-table :data="tableData" style="width: 100%" class="main-table">
+                        <el-table :data="tableData" style="width: 100%" class="main-table" max-height="750">
                             <el-table-column
                                     prop="id"
-                                    label="id"
-                                    width="180"
+                                    label="用户id"
+                                    width="280"
                                     align="center">
                             </el-table-column>
                             <el-table-column
-                                    prop="userName"
+                                    prop="username"
                                     label="用户名"
-                                    width="380"
+                                    width="480"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="password"
                                     label="密码"
-                                    width="380"
+                                    width="480"
                                     align="center">
                             </el-table-column>
                             <el-table-column
@@ -190,12 +190,15 @@
                                 <template slot-scope="scope">
                                     <el-button
                                             size="mini"
-                                            @click="handleEdit(scope.$index, scope.row)">Edit
+                                            @click="dialogFormVisible = true"
+                                            v-on:click="handleEdit(scope.$index, scope.row)"
+                                            :plain="true"
+                                    >修改
                                     </el-button>
                                     <el-button
                                             size="mini"
                                             type="danger"
-                                            @click="handleDelete(scope.$index, scope.row)">Delete
+                                            @click="handleDelete(scope.$index, scope.row)">删除
                                     </el-button>
                                 </template>
                             </el-table-column>
@@ -204,27 +207,27 @@
                 </el-container>
                 <el-container v-if="active == 3">
                     <el-header class="margin-title">
-                        <p>管理员账号管理</p>
-                        <el-button type="primary" round>添加</el-button>
+                        <p>用户管理</p>
+                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true">添加</el-button>
                     </el-header>
                     <template>
-                        <el-table :data="tableData" style="width: 100%" class="main-table">
+                        <el-table :data="tableData" style="width: 100%" class="main-table" max-height="750">
                             <el-table-column
                                     prop="id"
-                                    label="id"
-                                    width="180"
+                                    label="用户id"
+                                    width="280"
                                     align="center">
                             </el-table-column>
                             <el-table-column
-                                    prop="userName"
+                                    prop="username"
                                     label="用户名"
-                                    width="380"
+                                    width="480"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="password"
                                     label="密码"
-                                    width="380"
+                                    width="480"
                                     align="center">
                             </el-table-column>
                             <el-table-column
@@ -233,12 +236,15 @@
                                 <template slot-scope="scope">
                                     <el-button
                                             size="mini"
-                                            @click="handleEdit(scope.$index, scope.row)">Edit
+                                            @click="dialogFormVisible = true"
+                                            v-on:click="handleEdit(scope.$index, scope.row)"
+                                            :plain="true"
+                                    >修改
                                     </el-button>
                                     <el-button
                                             size="mini"
                                             type="danger"
-                                            @click="handleDelete(scope.$index, scope.row)">Delete
+                                            @click="handleDelete(scope.$index, scope.row)">删除
                                     </el-button>
                                 </template>
                             </el-table-column>
