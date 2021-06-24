@@ -99,8 +99,8 @@
                             <span>账号管理</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="2-1"><div @click="chooseActive(2)">管理员账号管理</div></el-menu-item>
-                            <el-menu-item index="2-2"><div @click="chooseActive(3)">用户账号管理</div></el-menu-item>
+                            <el-menu-item index="2-1"><div @click="chooseActive(2)">用户账号管理</div></el-menu-item>
+                            <el-menu-item index="2-2"><div @click="chooseActive(3)">管理员账号管理</div></el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
@@ -161,7 +161,7 @@
                 </el-container>
                 <el-container v-if="active == 2">
                     <el-header class="margin-title">
-                        <p>用户管理</p>
+                        <p>用户账号管理</p>
                         <el-button type="primary" round @click="dialogFormVisible = true" :plain="true">添加</el-button>
                     </el-header>
                     <template>
@@ -169,19 +169,19 @@
                             <el-table-column
                                     prop="id"
                                     label="用户id"
-                                    width="280"
+                                    width="150"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="username"
                                     label="用户名"
-                                    width="480"
+                                    width="400"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="password"
                                     label="密码"
-                                    width="480"
+                                    width="400"
                                     align="center">
                             </el-table-column>
                             <el-table-column
@@ -207,7 +207,7 @@
                 </el-container>
                 <el-container v-if="active == 3">
                     <el-header class="margin-title">
-                        <p>用户管理</p>
+                        <p>管理员账号管理</p>
                         <el-button type="primary" round @click="dialogFormVisible = true" :plain="true">添加</el-button>
                     </el-header>
                     <template>
@@ -215,19 +215,19 @@
                             <el-table-column
                                     prop="id"
                                     label="用户id"
-                                    width="280"
+                                    width="150"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="username"
                                     label="用户名"
-                                    width="480"
+                                    width="400"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="password"
                                     label="密码"
-                                    width="480"
+                                    width="400"
                                     align="center">
                             </el-table-column>
                             <el-table-column
@@ -256,7 +256,7 @@
     </el-container>
 
     <!-- addForm -->
-    <el-dialog :title=setDialogForm?"修改书籍":"添加书籍" :visible.sync="dialogFormVisible" center>
+    <el-dialog v-if="active==1" :title=setDialogForm?"修改书籍":"添加书籍" :visible.sync="dialogFormVisible" center>
         <!-- 添加书籍对话框 -->
         <el-form v-if="!setDialogForm" :model="form">
             <el-form-item label="图书名称" :label-width="formLabelWidth">
@@ -293,6 +293,70 @@
             <el-button type="primary" @click="dialogFormVisible = false" v-on:click="updateData">确 定</el-button>
         </div>
     </el-dialog>
+    <el-dialog v-if="active==2" :title=setDialogForm?"修改用户账号":"添加用户账号" :visible.sync="dialogFormVisible" center>
+        <!-- 添加书籍对话框 -->
+        <el-form v-if="!setDialogForm" :model="form">
+            <el-form-item label="用户名" :label-width="formLabelWidth">
+                <el-input v-model="form.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="用户密码" :label-width="formLabelWidth">
+                <el-input v-model="form.password" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div v-if="!setDialogForm" slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false" v-on:click="addData">确 定</el-button>
+        </div>
+        <!-- 修改书籍对话框 -->
+        <el-form v-if="setDialogForm" :model="form">
+            <el-form-item label="用户id" :label-width="formLabelWidth">
+                <el-input v-model="form.id" autocomplete="off" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="用户名" :label-width="formLabelWidth">
+                <el-input v-model="form.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="用户密码" :label-width="formLabelWidth">
+                <el-input v-model="form.password" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div v-if="setDialogForm" slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false" v-on:click="updateData">确 定</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog v-if="active==3" :title=setDialogForm?"修改管理员账号":"添加管理员账号" :visible.sync="dialogFormVisible" center>
+        <!-- 添加书籍对话框 -->
+        <el-form v-if="!setDialogForm" :model="form">
+            <el-form-item label="用户名" :label-width="formLabelWidth">
+                <el-input v-model="form.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="用户密码" :label-width="formLabelWidth">
+                <el-input v-model="form.password" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div v-if="!setDialogForm" slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false" v-on:click="addData">确 定</el-button>
+        </div>
+        <!-- 修改书籍对话框 -->
+        <el-form v-if="setDialogForm" :model="form">
+            <el-form-item label="管理员id" :label-width="formLabelWidth">
+                <el-input v-model="form.id" autocomplete="off" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="管理员名" :label-width="formLabelWidth">
+                <el-input v-model="form.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="管理员密码" :label-width="formLabelWidth">
+                <el-input v-model="form.password" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div v-if="setDialogForm" slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false" v-on:click="updateData">确 定</el-button>
+        </div>
+    </el-dialog>
+
+
 </div>
 </body>
 <script>
@@ -303,11 +367,7 @@
             tableData: [],
             dialogFormVisible: false,
             setDialogForm: 0,
-            form: {
-                name: '',
-                category: '',
-                number: '',
-            },
+            form: {},
             formLabelWidth: '120px'
         },
         methods: {
@@ -383,11 +443,7 @@
                                 message: '恭喜你，添加成功！',
                                 type: 'success'
                             });
-                            _self.form = {
-                                name: '',
-                                category: '',
-                                number: '',
-                            }
+                            _self.form = {}
                             console.log(_self.form)
                             _self.getAllData()
                         } else {
@@ -407,7 +463,7 @@
                     });
             },
             updateData() {
-                console.log('update')
+                console.log('update', this.id)
                 const _self = this
                 axios
                     .post('http://127.0.0.1:8000/modify', {
@@ -422,12 +478,8 @@
                                 message: '恭喜你，修改成功！',
                                 type: 'success'
                             });
-                            _self.form = {
-                                name: '',
-                                category: '',
-                                number: '',
-                            }
-                            console.log(_self.form)
+                            _self.form = {}
+                            // console.log(_self.form)
                             _self.getAllData()
                         } else {
                             _self.$message({
