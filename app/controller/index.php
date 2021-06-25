@@ -145,7 +145,6 @@ class index
         $active = Request::param('active');
         $id = Request::param('id');
         $data = Request::param('data');
-        $res='';
         switch ($active) {
             case '1':
                 $book = Books::find($id);
@@ -168,6 +167,7 @@ class index
                 break;
             default:
                 throw new \Exception('Unexpected value');
+                $res = 'error(default)';
         }
         return $res;
     }

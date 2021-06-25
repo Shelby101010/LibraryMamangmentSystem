@@ -83,7 +83,7 @@
             <!-- 侧边栏 -->
             <el-aside class="aside">
                 <el-menu
-                        :default-active=active
+                        default-active=1
                         class="el-menu-vertical-demo"
                         @open="handleOpen"
                         @close="handleClose">
@@ -294,7 +294,7 @@
         </div>
     </el-dialog>
     <el-dialog v-if="active==2" :title=setDialogForm?"修改用户账号":"添加用户账号" :visible.sync="dialogFormVisible" center>
-        <!-- 添加书籍对话框 -->
+        <!-- 添加对话框 -->
         <el-form v-if="!setDialogForm" :model="form">
             <el-form-item label="用户名" :label-width="formLabelWidth">
                 <el-input v-model="form.username" autocomplete="off"></el-input>
@@ -307,7 +307,7 @@
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogFormVisible = false" v-on:click="addData">确 定</el-button>
         </div>
-        <!-- 修改书籍对话框 -->
+        <!-- 修改对话框 -->
         <el-form v-if="setDialogForm" :model="form">
             <el-form-item label="用户id" :label-width="formLabelWidth">
                 <el-input v-model="form.id" autocomplete="off" disabled></el-input>
@@ -363,7 +363,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            active: '1',
+            active: 1,
             tableData: [],
             dialogFormVisible: false,
             setDialogForm: 0,
@@ -382,7 +382,7 @@
                 console.log(index, row);
                 this.setDialogForm = 1
                 this.form = JSON.parse(JSON.stringify(row))
-                this.id = index
+                this.id = row.id
             },
             handleDelete(index, row) {
                 console.log(index, row)
@@ -463,10 +463,9 @@
                     });
             },
             updateData() {
-                console.log('update', this.id)
+                console.log(this.active, 'update', this.id)
                 const _self = this
-                axios
-                    .post('http://127.0.0.1:8000/modify', {
+                    axios.post('http://127.0.0.1:8000/modify', {
                         active: this.active,
                         data: this.form,
                         id: this.id
