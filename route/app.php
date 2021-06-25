@@ -18,3 +18,6 @@ Route::rule('modify','Index/modify','POST');
 Route::rule('login','Index/login','GET');
 Route::rule('saveUser','Index/saveUser','POST');
 
+Route::rule('reader','Reader/index' );
+Route::rule('reader_read','Reader/read', 'POST');
+

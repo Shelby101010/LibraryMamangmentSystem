@@ -80,7 +80,7 @@ class index
                 $res = User::select();
                 break;
             case '3':
-            $res = Admin::select();
+                $res = Admin::select();
                 break;
         }
         return $res;
@@ -120,7 +120,8 @@ class index
         return 'delete';
     }
 
-    public  function remove(Request $request) {
+    public function remove(Request $request)
+    {
         $active = Request::param('active');
         $id = Request::param('id');
         $res = '';
@@ -134,35 +135,36 @@ class index
                 $res = $user->delete();
                 break;
             case '3':
-                $admin= Admin::find($id);
+                $admin = Admin::find($id);
                 $res = $admin->delete();
                 break;
         }
         return $res;
     }
 
-    public function modify(Request $request) {
+    public function modify(Request $request)
+    {
         $active = Request::param('active');
         $id = Request::param('id');
         $data = Request::param('data');
         switch ($active) {
             case '1':
                 $book = Books::find($id);
-                $book->name     = $data['name'];
-                $book->number    = $data['number'];
-                $book->category    = $data['category'];
+                $book->name = $data['name'];
+                $book->number = $data['number'];
+                $book->category = $data['category'];
                 $res = $book->save();
                 break;
             case '2':
                 $user = User::find($id);
-                $user->username     = $data['username'];
-                $user->password    = $data['password'];
+                $user->username = $data['username'];
+                $user->password = $data['password'];
                 $res = $user->save();
                 break;
             case '3':
                 $admin = Admin::find($id);
-                $admin->username     = $data['username'];
-                $admin->password    = $data['password'];
+                $admin->username = $data['username'];
+                $admin->password = $data['password'];
                 $res = $admin->save();
                 break;
             default:
@@ -171,12 +173,15 @@ class index
         }
         return $res;
     }
-    public function login() {
+
+    public function login()
+    {
         return View::fetch('index/login');
     }
-    public function saveUser(Request $request) {
+
+    public function saveUser(Request $request)
+    {
         $data = Request::param();
         return $data;
     }
-
 }
