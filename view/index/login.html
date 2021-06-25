@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录/注册</title>
+    <!-- 引入vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入axios -->
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- 引入axios-->
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+    <style>
+        #app {
+            height: 95vh;
+        }
+
+        .index-container {
+            height: 100%;
+        }
+
+        .header {
+            background: #409EFF;
+            border: 1px solid #DCDFE6;
+            border-radius: 4px;
+            margin: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-family: 'PingFang SC';
+            font-size: 24px;
+            color: #FFFFFF;
+        }
+
+        .main {
+            background: #DEE9F4;
+            border: 1px solid #DCDFE6;
+            border-radius: 4px;
+            margin: 3px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main>.loginBox{
+            width: 400px;
+            height: 400px;
+            background: #FFF;
+            border: 1px solid red;
+        }
+        .login-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .login-main>div{
+            width: 100%;
+            margin-bottom: 30px;
+        }
+         .login-main>div:nth-child(1),.login-main>div:nth-last-child(1) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-container class="index-container">
+        <el-header class="header">
+            <div>
+                <span class="header-title el-icon-reading">  欢迎登录图书管理系统</span>
+            </div>
+        </el-header>
+        <el-main class="main">
+            <div class="loginBox" v-if="form">
+                <el-header class="login-header">
+                    <p v-if="category">用户登录</p>
+                    <p v-if="!category">管理员登录</p>
+                </el-header>
+                <el-main class="login-main">
+                    <div>
+                        <template>
+                            <el-radio-group v-model="category">
+                                <el-radio :label="1">普通用户</el-radio>
+                                <el-radio :label="0">管理员</el-radio>
+                            </el-radio-group>
+                        </template>
+                    </div>
+                    <div>
+                        <span>用户名:</span>
+                        <el-input
+                                placeholder="请输入用户名"
+                                prefix-icon="el-icon-user"
+                                v-model="username"
+                                clearable>
+                        </el-input>
+                    </div>
+                    <div>
+                        <span>密  码:</span>
+                        <el-input
+                                placeholder="请输入密码"
+                                prefix-icon="el-icon-key"
+                                v-model="password"
+                                show-password
+                                clearable>
+                        </el-input>
+                    </div>
+                    <div>
+                        <el-button type="" plain @click="changeForm">注册</el-button>
+                        <el-button type="primary" plain @click="login">登录</el-button>
+                    </div>
+                </el-main>
+            </div>
+            <div class="loginBox" v-if="!form">
+                <el-header class="login-header">
+                    <p v-if="category">用户注册</p>
+                    <p v-if="!category">管理员注册</p>
+                </el-header>
+                <el-main class="login-main">
+                    <div>
+                        <template>
+                            <el-radio-group v-model="category">
+                                <el-radio :label="1">普通用户</el-radio>
+                                <el-radio :label="0">管理员</el-radio>
+                            </el-radio-group>
+                        </template>
+                    </div>
+                    <div>
+                        <span>用户名:</span>
+                        <el-input
+                                placeholder="请输入用户名"
+                                prefix-icon="el-icon-user"
+                                v-model="username"
+                                clearable>
+                        </el-input>
+                    </div>
+                    <div>
+                        <span>密  码:</span>
+                        <el-input
+                                placeholder="请输入密码"
+                                prefix-icon="el-icon-key"
+                                v-model="password"
+                                show-password
+                                clearable>
+                        </el-input>
+                    </div>
+                    <div>
+                        <el-button type="" plain @click="changeForm">返回登录</el-button>
+                        <el-button type="primary" plain @click="register">注册</el-button>
+                    </div>
+                </el-main>
+            </div>
+        </el-main>
+    </el-container>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            category: 1,
+            username:'',
+            password:'',
+            radio: 1,
+            form: true,
+        },
+        methods: {
+            changeForm() {
+                this.form = !this.form
+            },
+            login() {
+                console.log(this.category,this.username,this.password)
+                _self = this
+                axios.post('http://127.0.0.1:8000/saveUser', {
+                    category: this.category,
+                    username: this.username,
+                    password: this.password,
+                }).then(res => {
+                    console.log(res)
+
+                }).catch(error => {
+                    console.log(error);
+                    _self.$message.error({
+                        message: '出错了！',
+                    });
+                })
+            },
+            register() {
+                console.log(this.category,this.username,this.password)
+            }
+        },
+    })
+</script>
+</html>

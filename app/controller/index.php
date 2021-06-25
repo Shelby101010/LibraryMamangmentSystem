@@ -20,7 +20,6 @@ class index
      */
     public function index()
     {
-
         return View::fetch('index/index');
     }
 
@@ -167,7 +166,17 @@ class index
                 $admin->password    = $data['password'];
                 $res = $admin->save();
                 break;
+            default:
+                throw new \Exception('Unexpected value');
         }
         return $res;
     }
+    public function login() {
+        return View::fetch('index/login');
+    }
+    public function saveUser(Request $request) {
+        $data = Request::param();
+        return $data;
+    }
+
 }

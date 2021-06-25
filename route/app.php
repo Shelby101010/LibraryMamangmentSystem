@@ -15,3 +15,6 @@ Route::resource('index', 'Index');
 
 Route::rule('remove','Index/remove','POST');
 Route::rule('modify','Index/modify','POST');
+Route::rule('login','Index/login','GET');
+Route::rule('saveUser','Index/saveUser','POST');
+
