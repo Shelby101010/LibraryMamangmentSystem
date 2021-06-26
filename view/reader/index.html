@@ -207,8 +207,9 @@
             active: 1,
             tableData: [],
             dialogFormVisible: false,
-            setDialogForm: 0,
-            formLabelWidth: '120px'
+            formLabelWidth: '120px',
+            userId: 7,
+            book_id: null,
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -219,8 +220,37 @@
             },
             handleEdit(index, row) {
                 console.log(index, row);
-                this.setDialogForm = 1
-                this.id = row.id
+                this.book_id = row.id
+                this.user_id = this.userId
+
+                const _self = this
+                axios
+                    .post('http://127.0.0.1:8000/reader_borrow', {
+                        book_id: this.book_id,
+                        user_id: this.user_id,
+                    })
+                    .then(function (response) {
+                        console.log(response)
+                        if (response.data.bookRes && response.data.borrowRes) {
+                            _self.$message({
+                                message: '恭喜你，借阅成功！',
+                                type: 'success'
+                            });
+                            _self.getAllData()
+                        } else {
+                            _self.$message({
+                                message: '对不起，借阅失败！',
+                                type: 'warning'
+                            });
+                            _self.getAllData()
+                        }
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        _self.$message.error({
+                            message: '出错了！',
+                        });
+                        console.log(error);
+                    });
             },
             chooseActive(id) {
                 this.active = id
@@ -230,7 +260,7 @@
                 axios
                     .post('http://127.0.0.1:8000/reader_read', {
                         tableId: this.active,
-                        userId: 7,      /*测试用userid*/
+                        userId: this.userId,      /*测试用userid*/
                     })
                     .then(response => (this.tableData = response.data))
                     .catch(function (error) { // 请求失败处理

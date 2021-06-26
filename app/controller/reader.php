@@ -60,4 +60,28 @@ class reader
         return $res;
     }
 
+    public function borrow() {
+        $user_id = Request::param('user_id');
+        $book_id = Request::param('book_id');
+//        $user_id = 7;
+//        $book_id = 2;
+
+        $returnDate = date('Y-m-d', time() + 604800) ;
+
+        $borrowRes = BorrowBooks::create([
+            'book_id'  =>  $book_id,
+            'user_id' =>  $user_id,
+            'returnDate' => $returnDate,
+        ]);
+
+
+        $book = Books::where('id', $book_id)->find();
+        $book->number = $book->number - 1;
+        $bookRes = $book->save();
+
+        return [
+            'bookRes' => $bookRes,
+            'borrowRes' => $borrowRes,
+        ] ;
+    }
 }
