@@ -63,8 +63,6 @@ class reader
     public function borrow() {
         $user_id = Request::param('user_id');
         $book_id = Request::param('book_id');
-//        $user_id = 7;
-//        $book_id = 2;
 
         $returnDate = date('Y-m-d', time() + 604800) ;
 
@@ -83,5 +81,20 @@ class reader
             'bookRes' => $bookRes,
             'borrowRes' => $borrowRes,
         ] ;
+    }
+
+    public function return() {
+        $book_id = Request::param('book_id');
+        $id = Request::param('id');
+//        $book_id = 2;
+//        $id = 5;
+        $res = BorrowBooks::where('id', $id)->delete();
+
+        if($res) {
+            $book = Books::where('id', $book_id)->find();
+            $book->number = $book->number + 1;
+            $res = $book->save();
+        }
+        return $res;
     }
 }

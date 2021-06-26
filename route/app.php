@@ -21,5 +21,6 @@ Route::rule('saveUser','Index/saveUser','POST');
 Route::rule('reader','Reader/index' );
 Route::rule('reader_read','Reader/read', 'POST');
 Route::rule('reader_borrow','Reader/borrow', 'POST');
+Route::rule('reader_return','Reader/return', 'POST');
 
 
