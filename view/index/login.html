@@ -49,28 +49,32 @@
             align-items: center;
         }
 
-        .main>.loginBox{
+        .main > .loginBox {
             width: 400px;
             height: 400px;
             background: #FFF;
             border: 1px solid red;
         }
+
         .login-header {
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         .login-main {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
         }
-        .login-main>div{
+
+        .login-main > div {
             width: 100%;
             margin-bottom: 30px;
         }
-         .login-main>div:nth-child(1),.login-main>div:nth-last-child(1) {
+
+        .login-main > div:nth-child(1), .login-main > div:nth-last-child(1) {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -174,8 +178,8 @@
         el: '#app',
         data: {
             category: 1,
-            username:'',
-            password:'',
+            username: '',
+            password: '',
             radio: 1,
             form: true,
         },
@@ -184,7 +188,7 @@
                 this.form = !this.form
             },
             login() {
-                console.log(this.category,this.username,this.password)
+                console.log(this.category, this.username, this.password)
                 _self = this
                 axios.post('http://127.0.0.1:8000/saveUser', {
                     category: this.category,
@@ -201,7 +205,7 @@
                 })
             },
             register() {
-                console.log(this.category,this.username,this.password)
+                console.log(this.category, this.username, this.password)
             }
         },
     })

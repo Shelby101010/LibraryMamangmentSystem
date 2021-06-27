@@ -110,7 +110,7 @@
                 <el-container v-if="active == 1">
                     <el-header class="margin-title">
                         <p>图书库存管理</p>
-                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true">添加</el-button>
+                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true" v-on:click="setDialogForm=0">添加</el-button>
                     </el-header>
                     <template>
                         <el-table :data="tableData" style="width: 100%" class="main-table" max-height="750">
@@ -162,7 +162,7 @@
                 <el-container v-if="active == 2">
                     <el-header class="margin-title">
                         <p>用户账号管理</p>
-                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true">添加</el-button>
+                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true" v-on:click="setDialogForm=0">添加</el-button>
                     </el-header>
                     <template>
                         <el-table :data="tableData" style="width: 100%" class="main-table" max-height="750">
@@ -208,7 +208,7 @@
                 <el-container v-if="active == 3">
                     <el-header class="margin-title">
                         <p>管理员账号管理</p>
-                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true">添加</el-button>
+                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true" v-on:click="setDialogForm=0">添加</el-button>
                     </el-header>
                     <template>
                         <el-table :data="tableData" style="width: 100%" class="main-table" max-height="750">
@@ -274,7 +274,7 @@
             <el-button type="primary" @click="dialogFormVisible = false" v-on:click="addData">确 定</el-button>
         </div>
         <!-- 修改书籍对话框 -->
-        <el-form v-if="setDialogForm" :model="form">
+        <el-form v-if=setDialogForm :model="form">
             <el-form-item label="图书号" :label-width="formLabelWidth">
                 <el-input v-model="form.id" autocomplete="off" disabled></el-input>
             </el-form-item>
@@ -288,11 +288,12 @@
                 <el-input v-model="form.number" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
-        <div v-if="setDialogForm" slot="footer" class="dialog-footer">
+        <div v-if=setDialogForm slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogFormVisible = false" v-on:click="updateData">确 定</el-button>
         </div>
     </el-dialog>
+
     <el-dialog v-if="active==2" :title=setDialogForm?"修改用户账号":"添加用户账号" :visible.sync="dialogFormVisible" center>
         <!-- 添加对话框 -->
         <el-form v-if="!setDialogForm" :model="form">
@@ -324,9 +325,10 @@
             <el-button type="primary" @click="dialogFormVisible = false" v-on:click="updateData">确 定</el-button>
         </div>
     </el-dialog>
+
     <el-dialog v-if="active==3" :title=setDialogForm?"修改管理员账号":"添加管理员账号" :visible.sync="dialogFormVisible" center>
-        <!-- 添加书籍对话框 -->
-        <el-form v-if="!setDialogForm" :model="form">
+        <!-- 添加对话框 -->
+        <el-form v-if=!setDialogForm :model="form">
             <el-form-item label="用户名" :label-width="formLabelWidth">
                 <el-input v-model="form.username" autocomplete="off"></el-input>
             </el-form-item>
@@ -334,12 +336,12 @@
                 <el-input v-model="form.password" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
-        <div v-if="!setDialogForm" slot="footer" class="dialog-footer">
+        <div v-if=!setDialogForm slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogFormVisible = false" v-on:click="addData">确 定</el-button>
         </div>
-        <!-- 修改书籍对话框 -->
-        <el-form v-if="setDialogForm" :model="form">
+        <!-- 修改对话框 -->
+        <el-form v-if=setDialogForm :model="form">
             <el-form-item label="管理员id" :label-width="formLabelWidth">
                 <el-input v-model="form.id" autocomplete="off" disabled></el-input>
             </el-form-item>
@@ -350,7 +352,7 @@
                 <el-input v-model="form.password" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
-        <div v-if="setDialogForm" slot="footer" class="dialog-footer">
+        <div v-if=setDialogForm slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogFormVisible = false" v-on:click="updateData">确 定</el-button>
         </div>
