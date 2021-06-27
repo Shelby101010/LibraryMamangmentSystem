@@ -202,17 +202,18 @@
                             message: response.data + '即将为您跳转',
                             type: 'success'
                         })
-                        setInterval(function () {
+                        const id = setInterval(function () {
                             window.location = "reader"
+                            clearInterval(id)
                         },2000)
-
                     } else if (response.data == '管理员登录成功！') {
                         _self.$message({
                             message: response.data + ' 即将为您跳转',
                             type: 'success'
                         })
-                        setInterval(function () {
+                        const id = setInterval(function () {
                             window.location = "index"
+                            clearInterval(id)
                         },2000)
                     } else {
                         _self.$message({
@@ -230,6 +231,44 @@
 
             register() {
                 console.log(this.category, this.username, this.password)
+                const _self = this
+                axios.post('http://127.0.0.1:8000/login_register', {
+                    category: this.category,
+                    username: this.username,
+                    password: this.password,
+                }).then(response => {
+                    console.log(response)
+                    if (response.data == '用户注册成功！') {
+                        _self.$message({
+                            message: response.data + '即将为您登录',
+                            type: 'success'
+                        })
+                        const id = setInterval(function (){
+                            _self.login()
+                            clearInterval(id)
+                        },1000)
+
+                    } else if (response.data == '管理员注册成功！') {
+                        _self.$message({
+                            message: response.data + ' 即将为您登录',
+                            type: 'success'
+                        })
+                        const id = setInterval(function (){
+                            _self.login()
+                            clearInterval(id)
+                        },1000)
+                    } else {
+                        _self.$message({
+                            message: response.data,
+                            type: 'warning'
+                        });
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    _self.$message.error({
+                        message: '出错了！',
+                    });
+                })
             }
         },
     })

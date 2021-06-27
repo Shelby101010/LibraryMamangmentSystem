@@ -25,6 +25,7 @@ Route::rule('reader_return','Reader/return', 'POST')->middleware('checkUser');
 
 Route::rule('login','Login/index');
 Route::rule('login_check','Login/check', 'POST');
+Route::rule('login_register','Login/register', 'POST');
 
 Route::rule('error','Error/index');
 
