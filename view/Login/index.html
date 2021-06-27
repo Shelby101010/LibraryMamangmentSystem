@@ -187,16 +187,39 @@
             changeForm() {
                 this.form = !this.form
             },
+
             login() {
                 console.log(this.category, this.username, this.password)
-                _self = this
-                axios.post('http://127.0.0.1:8000/saveUser', {
+                const _self = this
+                axios.post('http://127.0.0.1:8000/login_check', {
                     category: this.category,
                     username: this.username,
                     password: this.password,
-                }).then(res => {
-                    console.log(res)
+                }).then(response => {
+                    console.log(response)
+                    if (response.data == '用户登录成功！') {
+                        _self.$message({
+                            message: response.data + '即将为您跳转',
+                            type: 'success'
+                        })
+                        setInterval(function () {
+                            window.location = "reader"
+                        },2000)
 
+                    } else if (response.data == '管理员登录成功！') {
+                        _self.$message({
+                            message: response.data + ' 即将为您跳转',
+                            type: 'success'
+                        })
+                        setInterval(function () {
+                            window.location = "index"
+                        },2000)
+                    } else {
+                        _self.$message({
+                            message: response.data,
+                            type: 'warning'
+                        });
+                    }
                 }).catch(error => {
                     console.log(error);
                     _self.$message.error({
@@ -204,6 +227,7 @@
                     });
                 })
             },
+
             register() {
                 console.log(this.category, this.username, this.password)
             }

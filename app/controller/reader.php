@@ -17,16 +17,6 @@ class reader
     public function index()
     {
         return View::fetch("reader/index");
-//        $res = '';
-//        switch ($id) {
-//            case '1':
-//                $res = Books::select();
-//                break;
-//            case '2':
-//                $res = '已经借阅的书籍列表';
-//                break;
-//        }
-//        return $res;
     }
 
     public function read(Request $request)
