@@ -9,22 +9,23 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 use app\middleware\Check;
+use app\middleware\CheckUser;
 use think\facade\Route;
+use app\middleware\CheckAdmin;
 
+Route::resource('index', 'Index')->middleware('checkAdmin');
+Route::rule('remove','Index/remove','POST')->middleware('checkAdmin');
+Route::rule('modify','Index/modify','POST')->middleware('checkAdmin');
+Route::rule('saveUser','Index/saveUser','POST')->middleware('checkAdmin');
 
-Route::resource('index', 'Index')->middleware(Check::class);
-
-Route::rule('remove','Index/remove','POST')->middleware(Check::class);
-Route::rule('modify','Index/modify','POST')->middleware(Check::class);
-Route::rule('saveUser','Index/saveUser','POST')->middleware(Check::class);
-
-Route::rule('reader','Reader/index')->middleware(Check::class);
-Route::rule('reader_read','Reader/read', 'POST')->middleware(Check::class);
-Route::rule('reader_borrow','Reader/borrow', 'POST')->middleware(Check::class);
-Route::rule('reader_return','Reader/return', 'POST')->middleware(Check::class);
+Route::rule('reader','Reader/index')->middleware('checkUser');
+Route::rule('reader_read','Reader/read', 'POST')->middleware('checkUser');
+Route::rule('reader_borrow','Reader/borrow', 'POST')->middleware('checkUser');
+Route::rule('reader_return','Reader/return', 'POST')->middleware('checkUser');
 
 Route::rule('login','Login/index');
 Route::rule('login_check','Login/check', 'POST');
-//Route::rule('login_hello','Login/hello');
+
+Route::rule('error','Error/index');
 
 
