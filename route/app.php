@@ -29,4 +29,6 @@ Route::rule('login_register','Login/register', 'POST');
 
 Route::rule('error','Error/index');
 
+Route::rule('logOut','LogOut/index');
+
 

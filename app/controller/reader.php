@@ -10,12 +10,15 @@ use app\model\User;
 use mysql_xdevapi\Exception;
 use think\exception\ErrorException;
 use think\facade\Request;
+use think\facade\Session;
 use think\facade\View;
 
 class reader
 {
     public function index()
     {
+        $username = Session::get('username');
+        View::assign('username', $username);
         return View::fetch("reader/index");
     }
 

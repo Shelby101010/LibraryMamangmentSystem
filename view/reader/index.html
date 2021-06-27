@@ -65,6 +65,11 @@
             align-items: center;
         }
 
+        .welcome {
+            font-family: "PingFang SC";
+            font-size: 16px;
+            color: #FFFFFF;
+        }
     </style>
 </head>
 <body>
@@ -76,7 +81,8 @@
                 <span class="header-title el-icon-reading">  图书借阅系统</span>
             </div>
             <div>
-                <el-button type="primary" icon="el-icon-user">登录 / 注册</el-button>
+                <span class="welcome">你好！用户{$username}</span>
+                <el-button type="primary" icon="el-icon-user" v-on:click="logOut()">注销</el-button>
             </div>
         </el-header>
         <el-container>
@@ -196,8 +202,6 @@
             </el-main>
         </el-container>
     </el-container>
-
-
 </div>
 </body>
 <script>
@@ -212,6 +216,25 @@
             book_id: null,
         },
         methods: {
+            logOut() {
+                const _self = this
+                axios
+                    .get('http://127.0.0.1:8000/logOut')
+                    .then(function (response) {
+                        console.log(response)
+                        _self.$message({
+                            message: response.data + '！ 即将为您跳转',
+                            type: 'success'
+                        })
+                        const id = setInterval(function () {
+                            window.location = "login"
+                            clearInterval(id)
+                        }, 2000)
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    })
+            },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
             },
@@ -225,7 +248,7 @@
                 this.id = row.id
                 axios
                     .post('http://127.0.0.1:8000/reader_return', {
-                        'book_id':  this.book_id,
+                        'book_id': this.book_id,
                         'id': this.id,
                     })
                     .then(function (response) {

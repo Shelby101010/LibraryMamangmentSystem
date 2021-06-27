@@ -7,6 +7,7 @@ use app\model\Admin;
 use app\model\Books;
 use app\model\User;
 use think\facade\Request;
+use think\facade\Session;
 use think\facade\View;
 use think\Model;
 
@@ -20,6 +21,8 @@ class index
      */
     public function index()
     {
+        $username = Session::get('username');
+        View::assign('username', $username);
         return View::fetch('index/index');
     }
 

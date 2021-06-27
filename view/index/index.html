@@ -65,6 +65,12 @@
             align-items: center;
         }
 
+        .welcome {
+            font-family: "PingFang SC";
+            font-size: 16px;
+            color: #FFFFFF;
+        }
+
     </style>
 </head>
 <body>
@@ -76,7 +82,8 @@
                 <span class="header-title el-icon-reading">  图书管理系统</span>
             </div>
             <div>
-                <el-button type="primary" icon="el-icon-user">登录 / 注册</el-button>
+                <span class="welcome">你好！管理员{$username}</span>
+                <el-button type="primary" icon="el-icon-user" v-on:click="logOut()">注销</el-button>
             </div>
         </el-header>
         <el-container>
@@ -99,8 +106,12 @@
                             <span>账号管理</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="2-1"><div @click="chooseActive(2)">用户账号管理</div></el-menu-item>
-                            <el-menu-item index="2-2"><div @click="chooseActive(3)">管理员账号管理</div></el-menu-item>
+                            <el-menu-item index="2-1">
+                                <div @click="chooseActive(2)">用户账号管理</div>
+                            </el-menu-item>
+                            <el-menu-item index="2-2">
+                                <div @click="chooseActive(3)">管理员账号管理</div>
+                            </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
@@ -110,7 +121,9 @@
                 <el-container v-if="active == 1">
                     <el-header class="margin-title">
                         <p>图书库存管理</p>
-                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true" v-on:click="setDialogForm=0">添加</el-button>
+                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true"
+                                   v-on:click="setDialogForm=0">添加
+                        </el-button>
                     </el-header>
                     <template>
                         <el-table :data="tableData" style="width: 100%" class="main-table" max-height="750">
@@ -162,7 +175,9 @@
                 <el-container v-if="active == 2">
                     <el-header class="margin-title">
                         <p>用户账号管理</p>
-                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true" v-on:click="setDialogForm=0">添加</el-button>
+                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true"
+                                   v-on:click="setDialogForm=0">添加
+                        </el-button>
                     </el-header>
                     <template>
                         <el-table :data="tableData" style="width: 100%" class="main-table" max-height="750">
@@ -208,7 +223,9 @@
                 <el-container v-if="active == 3">
                     <el-header class="margin-title">
                         <p>管理员账号管理</p>
-                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true" v-on:click="setDialogForm=0">添加</el-button>
+                        <el-button type="primary" round @click="dialogFormVisible = true" :plain="true"
+                                   v-on:click="setDialogForm=0">添加
+                        </el-button>
                     </el-header>
                     <template>
                         <el-table :data="tableData" style="width: 100%" class="main-table" max-height="750">
@@ -255,7 +272,7 @@
         </el-container>
     </el-container>
 
-    <!-- addForm -->
+    <!-- Form -->
     <el-dialog v-if="active==1" :title=setDialogForm?"修改书籍":"添加书籍" :visible.sync="dialogFormVisible" center>
         <!-- 添加书籍对话框 -->
         <el-form v-if="!setDialogForm" :model="form">
@@ -373,6 +390,25 @@
             formLabelWidth: '120px'
         },
         methods: {
+            logOut() {
+                const _self = this
+                axios
+                    .get('http://127.0.0.1:8000/logOut')
+                    .then(function (response) {
+                        console.log(response)
+                        _self.$message({
+                            message: response.data + '！ 即将为您跳转',
+                            type: 'success'
+                        })
+                        const id = setInterval(function () {
+                            window.location = "login"
+                            clearInterval(id)
+                        }, 2000)
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    })
+            },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
             },
@@ -416,7 +452,6 @@
                     _self.getAllData()
                 })
             },
-
             chooseActive(id) {
                 this.active = id
                 this.getAllData()
@@ -467,11 +502,11 @@
             updateData() {
                 console.log(this.active, 'update', this.id)
                 const _self = this
-                    axios.post('http://127.0.0.1:8000/modify', {
-                        active: this.active,
-                        data: this.form,
-                        id: this.id
-                    })
+                axios.post('http://127.0.0.1:8000/modify', {
+                    active: this.active,
+                    data: this.form,
+                    id: this.id
+                })
                     .then(function (response) {
                         console.log(response);
                         if (response.data) {
@@ -484,7 +519,7 @@
                             _self.getAllData()
                         } else {
                             _self.$message({
-                                message: '对不起，修改失败！'+response.data,
+                                message: '对不起，修改失败！' + response.data,
                                 type: 'warning'
                             });
                             _self.getAllData()
