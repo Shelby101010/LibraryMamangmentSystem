@@ -12,19 +12,19 @@ use app\middleware\Check;
 use think\facade\Route;
 
 
-Route::resource('index', 'Index');
+Route::resource('index', 'Index')->middleware(Check::class);
 
-Route::rule('remove','Index/remove','POST');
-Route::rule('modify','Index/modify','POST');
-Route::rule('saveUser','Index/saveUser','POST');
+Route::rule('remove','Index/remove','POST')->middleware(Check::class);
+Route::rule('modify','Index/modify','POST')->middleware(Check::class);
+Route::rule('saveUser','Index/saveUser','POST')->middleware(Check::class);
 
-Route::rule('reader','Reader/index')/*->middleware(Check::class)*/;
-Route::rule('reader_read','Reader/read', 'POST');
-Route::rule('reader_borrow','Reader/borrow', 'POST');
-Route::rule('reader_return','Reader/return', 'POST');
+Route::rule('reader','Reader/index')->middleware(Check::class);
+Route::rule('reader_read','Reader/read', 'POST')->middleware(Check::class);
+Route::rule('reader_borrow','Reader/borrow', 'POST')->middleware(Check::class);
+Route::rule('reader_return','Reader/return', 'POST')->middleware(Check::class);
 
 Route::rule('login','Login/index');
 Route::rule('login_check','Login/check', 'POST');
-Route::rule('login_hello','Login/hello');
+//Route::rule('login_hello','Login/hello');
 
 
